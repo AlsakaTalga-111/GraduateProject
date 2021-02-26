@@ -151,7 +151,6 @@ void HandleFile()
         }
 
         while(getline(File, Parse)){
-            //cout << Parse << endl;
             if(CheckNote(Parse) == 0){
                 continue;
             }
@@ -296,7 +295,7 @@ void CheckClassElement(const string& Parse, int FileNo)
 {
     string::size_type pos;
     pos = Parse.find('{');
-    if((int)pos+1 == Parse.length() && pos != std::string::npos){
+    if(((int)pos+1 == Parse.length() || Parse[pos+1] == ' ')&& pos != std::string::npos){
         classPart++;
     }
 
@@ -364,7 +363,7 @@ void CheckClassElement(const string& Parse, int FileNo)
               tempPos++;
           }
           beginPos = tempPos;
-          while(Parse[tempPos] != ';' && tempPos <= Parse.length()){
+          while(Parse[tempPos] != ';' && tempPos < Parse.length()){
               tempPos++;
           }
           endPos = tempPos;
@@ -397,13 +396,12 @@ void CheckClassElement(const string& Parse, int FileNo)
           }
     }
 
-
     if(classPart == 2 && tempFunc.FuncName.length()!=0){
         FileList[FileNo].Class[FileList[FileNo].Class.size()-1].Function.push_back(tempFunc);
     }
 
     pos = Parse.find('}');
-    if(((int)pos+1 == Parse.length() || Parse[pos-1] == ' ') && pos != std::string::npos){
+    if(((int)pos+1 == Parse.length() || Parse[pos-1] == ' ' || Parse[pos+1] == ')') && pos != std::string::npos){
         classPart--;
     }
 }
